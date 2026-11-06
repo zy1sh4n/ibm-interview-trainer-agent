@@ -1,10 +1,23 @@
 """
 IBM Interview Trainer Agent – Settings
-Pure pydantic-settings config. Reads from .env file.
+Reads from: .env file (local) OR Streamlit st.secrets (Streamlit Cloud).
 """
 from functools import lru_cache
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+def _st_secrets() -> dict:
+    """Pull IBM credentials from st.secrets when running on Streamlit Cloud."""
+    try:
+        import streamlit as st
+        sec = dict(st.secrets)
+        # Flatten nested [ibm] section if present
+        if "ibm" in sec and isinstance(sec["ibm"], dict):
+            sec.update({f"ibm_{k}": v for k, v in sec["ibm"].items()})
+        return sec
+    except Exception:
+        return {}
 
 
 class Settings(BaseSettings):
@@ -18,7 +31,7 @@ class Settings(BaseSettings):
     app_secret_key: str = Field(default="change-me-in-production-32-chars!!")
     app_log_level: str = Field(default="INFO")
 
-    # IBM WatsonX / Granite (MANDATORY)
+    # IBM WatsonX / Granite (MANDATORY for live mode)
     ibm_watsonx_api_key: str = Field(default="")
     ibm_watsonx_url: str = Field(default="https://us-south.ml.cloud.ibm.com")
     ibm_watsonx_project_id: str = Field(default="")
@@ -84,4 +97,16 @@ class Settings(BaseSettings):
 
 @lru_cache()
 def get_settings() -> Settings:
-    return Settings()
+    s = Settings()
+    # On Streamlit Cloud, .env doesn't exist — override from st.secrets
+    if not s.ibm_watsonx_api_key:
+        sec = _st_secrets()
+        if sec.get("ibm_watsonx_api_key"):
+            # Re-create settings with the secrets injected as env overrides
+            import os
+            os.environ.setdefault("IBM_WATSONX_API_KEY",    sec.get("ibm_watsonx_api_key", ""))
+            os.environ.setdefault("IBM_WATSONX_PROJECT_ID", sec.get("ibm_watsonx_project_id", ""))
+            os.environ.setdefault("IBM_WATSONX_URL",        sec.get("ibm_watsonx_url", s.ibm_watsonx_url))
+            get_settings.cache_clear()
+            return Settings()
+    return s

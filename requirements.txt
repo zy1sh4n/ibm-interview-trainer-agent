@@ -1,10 +1,9 @@
 # =============================================================================
 # IBM Interview Trainer Agent — Requirements
-# Python 3.14 compatible · Pure-Python only · No C extensions required
-# Install: python -m pip install -r requirements.txt
+# Streamlit Community Cloud compatible
 # =============================================================================
 
-# Web framework
+# Web framework (FastAPI kept for local API server; not used on Streamlit Cloud)
 fastapi>=0.115.0
 uvicorn>=0.32.0
 python-multipart>=0.0.12
@@ -14,25 +13,16 @@ pydantic>=2.10.0
 pydantic-settings>=2.6.0
 python-dotenv>=1.0.1
 
-# IBM WatsonX AI + Granite (MANDATORY) — pure-Python wheels
-ibm-watsonx-ai>=1.9.0
-ibm-cloud-sdk-core>=3.28.0
-ibm-watson>=11.2.0
+# IBM WatsonX AI SDK (optional — app runs in mock mode if not installed)
+# Uncomment below to enable live IBM Granite calls (requires C build tools):
+# ibm-watsonx-ai>=1.9.0
 
 # HTTP
 httpx>=0.28.0
 requests>=2.32.0
 
-# Data
-python-dateutil>=2.9.0
-pytz>=2024.2
-
-# Utilities
-click>=8.1.7
-rich>=13.9.0
-
-# Streamlit UI
+# Streamlit UI (Streamlit Cloud provides this, but pin for local parity)
 streamlit>=1.40.0
 
-# Testing
-pytest>=8.3.0
+# Utilities
+python-dateutil>=2.9.0
