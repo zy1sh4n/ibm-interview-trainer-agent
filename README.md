@@ -7,7 +7,18 @@
 [![IBM Granite](https://img.shields.io/badge/IBM-Granite%2013B-0043ce?logo=ibm)](https://www.ibm.com/granite)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-green?logo=fastapi)](https://fastapi.tiangolo.com)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.40+-red?logo=streamlit)](https://streamlit.io)
+[![Deployed](https://img.shields.io/badge/Deployed-Streamlit%20Cloud-ff4b4b?logo=streamlit)](https://ibm-interview-trainer-agent.streamlit.app/)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
+
+---
+
+## 🌐 Live Demo
+
+> **The app is live and publicly accessible:**
+>
+> ### 👉 [https://ibm-interview-trainer-agent.streamlit.app/](https://ibm-interview-trainer-agent.streamlit.app/)
+>
+> No installation required — open the link and start preparing for your interview immediately.
 
 ---
 
